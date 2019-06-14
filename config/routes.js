@@ -1,15 +1,15 @@
-const axios = require('axios');
+const axios = require("axios");
 const bcrypt = require("bcryptjs");
-
-const Users = require("./routes-model.js");
 const tokenService = require("../auth/token-service.js");
 
-const { authenticate } = require('../auth/authenticate.js');
+const Users = require("./routes-model.js");
+
+const { authenticate } = require("../auth/authenticate");
 
 module.exports = server => {
-  server.post('/api/register', register);
-  server.post('/api/login', login);
-  server.get('/api/jokes', authenticate, getJokes);
+  server.post("/api/register", register);
+  server.post("/api/login", login);
+  server.get("/api/jokes", authenticate, getJokes);
 };
 
 function register(req, res) {
@@ -39,22 +39,18 @@ function login(req, res) {
           message: `Welcome ${user.username}!, have a token...`,
           token,
           roles: token.roles
-  
         });
       } else {
-         
         res.status(401).json({ message: "Invalid Credentials" });
       }
     })
     .catch(error => {
       res.status(500).json(error);
     });
-
 }
 
-
 function getJokes(req, res) {
-  console.log('i am here')
+
   const requestOptions = {
     headers: { accept: "application/json" }
   };
@@ -65,6 +61,7 @@ function getJokes(req, res) {
       res.status(200).json(response.data.results);
     })
     .catch(err => {
+      console.error(error)
       res.status(500).json({ message: "Error Fetching Jokes", error: err });
     });
 }
