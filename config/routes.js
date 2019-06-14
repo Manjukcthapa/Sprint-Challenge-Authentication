@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const Users = require("./routes-model.js");
 const tokenService = require("../auth/token-service.js");
 
-const { authenticate } = require('../auth/authenticate');
+const { authenticate } = require('../auth/authenticate.js');
 
 module.exports = server => {
   server.post('/api/register', register);
@@ -38,6 +38,7 @@ function login(req, res) {
         res.status(200).json({
           message: `Welcome ${user.username}!, have a token...`,
           token,
+          roles: token.roles
   
         });
       } else {
@@ -51,17 +52,19 @@ function login(req, res) {
 
 }
 
+
 function getJokes(req, res) {
+  console.log('i am here')
   const requestOptions = {
-    headers: { accept: 'application/json' },
+    headers: { accept: "application/json" }
   };
 
   axios
-    .get('https://icanhazdadjoke.com/search', requestOptions)
+    .get("https://icanhazdadjoke.com/search", requestOptions)
     .then(response => {
       res.status(200).json(response.data.results);
     })
     .catch(err => {
-      res.status(500).json({ message: 'Error Fetching Jokes', error: err });
+      res.status(500).json({ message: "Error Fetching Jokes", error: err });
     });
 }
