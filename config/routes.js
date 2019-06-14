@@ -2,6 +2,7 @@ const axios = require('axios');
 const bcrypt = require("bcryptjs");
 
 const Users = require("./routes-model.js");
+const tokenService = require("../auth/token-service.js");
 
 const { authenticate } = require('../auth/authenticate');
 
